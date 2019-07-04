@@ -56,6 +56,10 @@ class GraphHeapValue(
   val referencesClass: Boolean
     get() = actual is ObjectReference && graph.referencesClass(actual)
 
+  val referencesInstance: Boolean
+    get() = actual is ObjectReference && graph.referencesInstance(actual)
+
+
   fun readAsJavaString(): String? {
     return readObjectRecord()?.asInstance?.readAsJavaString()
   }

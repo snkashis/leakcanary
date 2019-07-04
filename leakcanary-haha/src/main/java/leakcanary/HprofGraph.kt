@@ -6,6 +6,7 @@ import leakcanary.GraphObjectRecord.GraphObjectArrayRecord
 import leakcanary.GraphObjectRecord.GraphPrimitiveArrayRecord
 import leakcanary.HeapValue.ObjectReference
 import leakcanary.ObjectIdMetadata.CLASS
+import leakcanary.ObjectIdMetadata.INSTANCE
 import leakcanary.ObjectIdMetadata.STRING
 import leakcanary.Record.HeapDumpRecord.ObjectRecord
 import leakcanary.Record.HeapDumpRecord.ObjectRecord.ClassDumpRecord
@@ -90,6 +91,14 @@ class HprofGraph(private val parser: HprofParser) {
 
   fun referencesClass(reference: ObjectReference): Boolean {
     return !reference.isNull && parser.objectIdMetadata(reference.value) == CLASS
+  }
+
+  fun referencesInstance(reference: ObjectReference): Boolean {
+    if (reference.isNull) {
+      return false
+    }
+    val metadata = parser.objectIdMetadata(reference.value)
+    return  metadata == INSTANCE || metadata == STRING
   }
 
   /**
